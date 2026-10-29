@@ -19,12 +19,47 @@
     </section>
 
     <nav class="tabs" aria-label="ページ内メニュー">
-      <a href="#party"><span>01</span>パーティ</a><a href="#training"><span>02</span>経験値記録</a><a href="#backup"><span>03</span>バックアップ</a>
+      <a href="#party"><span>01</span>パーティ</a><a href="#advisor"><span>02</span>装備相談</a><a href="#training"><span>03</span>経験値記録</a><a href="#backup"><span>04</span>バックアップ</a>
     </nav>
 
     <section id="party" class="section-block">
       <div class="section-heading"><div><p class="eyebrow">YOUR PARTY</p><h2>パーティ編成</h2></div><p class="section-hint">4人分の職業と装備を記録</p></div>
       <div id="party-list" class="party-grid"></div>
+    </section>
+
+    <section id="advisor" class="section-block advisor-section">
+      <div class="section-heading"><div><p class="eyebrow">LEVELING ADVISOR</p><h2>レベル上げ装備アドバイザー</h2></div><p class="section-hint">登録した特徴だけで武器を比べます</p></div>
+      <p class="advisor-disclaimer">ゲーム内の武器性能データは内蔵していません。武器名だけでは性能を推測せず、入力した特徴と手動評価を使った目安を表示します。単体攻撃・その他の特徴は記録用で、通常周回・メタル系・MP効率の比較点には使いません。経験値量、ダメージ、攻撃倍率は計算しません。</p>
+      <div class="advisor-settings panel">
+        <label>対象の職業<select id="advisor-vocation"><option value="">職業を選択</option></select></label>
+        <div class="advisor-source-field"><label for="party-vocation-source">パーティの職業を使う（任意）</label><div class="source-row"><select id="party-vocation-source"><option value="">登録職業を選択</option></select><button id="use-party-vocation" class="button button-tertiary" type="button">反映</button></div></div>
+        <label>今回の目的<select id="advisor-purpose"><option value="quest">通常クエストの周回</option><option value="exp">経験値効率を重視</option><option value="metal">メタル系モンスター対策</option></select></label>
+        <fieldset class="priority-fieldset"><legend>重視すること</legend><div class="priority-options">
+          <label><input type="checkbox" value="speed">周回速度</label><label><input type="checkbox" value="mp">MP効率</label><label><input type="checkbox" value="metal">メタル系対策</label><label><input type="checkbox" value="owned">手持ち武器</label>
+        </div></fieldset>
+      </div>
+
+      <div class="advisor-layout">
+        <form id="advisor-weapon-form" class="panel advisor-form">
+          <div class="advisor-form-heading"><h3>比較する武器を登録</h3><span class="optional-note">性能は手入力</span></div>
+          <input id="advisor-editing-id" type="hidden">
+          <div class="advisor-source-field"><label for="party-weapon-source">パーティ登録済みの武器を使う（任意）</label><div class="source-row"><select id="party-weapon-source"><option value="">武器名を選択</option></select><button id="use-party-weapon" class="button button-tertiary" type="button">名前を入力</button></div></div>
+          <label>武器名<input id="advisor-weapon-name" type="text" maxlength="80" placeholder="例：手持ちの武器名" required></label>
+          <fieldset class="feature-fieldset"><legend>武器の特徴（分かるものを選択）</legend><div class="feature-options">
+            <label><input type="checkbox" name="feature" value="all">全体攻撃</label><label><input type="checkbox" name="feature" value="single">単体攻撃</label><label><input type="checkbox" name="feature" value="metal">メタル系特効</label><label><input type="checkbox" name="feature" value="other">その他</label>
+          </div></fieldset>
+          <label>その他の特徴・補足（任意）<input id="advisor-weapon-other" type="text" maxlength="120" placeholder="確認できている内容だけを入力"></label>
+          <div class="advisor-number-row"><label>武器レベル（任意）<input id="advisor-weapon-level" type="number" min="1" step="1" inputmode="numeric" placeholder="未入力でも可"></label><label>限界突破回数（任意）<input id="advisor-weapon-breaks" type="number" min="0" step="1" inputmode="numeric" placeholder="未入力でも可"></label></div>
+          <label>使用できる主なスキル（任意）<textarea id="advisor-weapon-skills" maxlength="250" placeholder="スキル名など、分かる範囲で"></textarea></label>
+          <label>MP効率の手動評価（任意）<select id="advisor-weapon-mp"><option value="">未評価</option><option value="good">良いと思う</option><option value="average">ふつう</option><option value="poor">気になる</option></select></label>
+          <label class="owned-option"><input id="advisor-weapon-owned" type="checkbox">所持している武器として比較する</label>
+          <div class="advisor-form-actions"><button class="button button-primary" type="submit">武器を保存</button><button id="cancel-weapon-edit" class="button button-secondary" type="button" hidden>編集をやめる</button></div>
+          <p class="form-help">レベル・限界突破・スキルは記録用です。ゲーム内の性能データがないため、比較点には加算しません。</p>
+        </form>
+        <div class="panel advisor-candidates-panel"><div class="history-heading"><h3>登録した武器</h3><span id="advisor-weapon-count" class="count-badge">0件</span></div><div id="advisor-weapon-list" class="advisor-weapon-list"></div></div>
+      </div>
+      <div class="advisor-results-wrap"><div class="results-heading"><div><p class="eyebrow">SUGGESTIONS</p><h3>目的別の提案</h3></div><span id="advisor-purpose-badge" class="purpose-badge">目的を選択してください</span></div><div id="advisor-results" class="advisor-results" aria-live="polite"></div></div>
+      <p id="advisor-message" class="advisor-message" role="status" aria-live="polite"></p>
     </section>
 
     <section id="training" class="section-block training-section">
